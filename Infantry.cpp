@@ -12,240 +12,95 @@ using namespace std;
 #include "infantry.h"
 
 
-// initialize total_ships to zero
-int vessel::total_blue_ships = 0;
-int vessel::total_red_ships = 0;
-
-
 
 // constructors
 
-vessel::vessel()
+infantry::infantry() 
 {
-    set_name("Unknown");
-    set_type("Unknown"); 
-    
+    setName("Unknown");
+    setType("Unknown"); 
+    setPistol(100);
+    setHealth(100);
 
 }
 
 
-vessel::vessel(string vname, string vteam, string vtype)
+infantry::infantry(string tempName, string tempType)
 {
-    set_name(vname);
-    set_type(vtype);
-    set_team(vteam);
-    
-    if(get_team()=="Blue")
-       total_blue_ships++;
-    else if(get_team()=="Red")
-       total_red_ships++;
-    
-
+    setName(tempName);
+    setType(tempType);
+    setPistol(100);
+	setHealth(100);
 }       
 
 
 // set and get functions
 
-void vessel::set_name(string vname)
+void infantry::setName(string tempName)
 {
-    name = vname;
+    this->name = tempName;
 }
         
         
-string vessel::get_name() const
+string infantry::getName() const
 {
-    return name;
+    return this->name;
 }
         
-void vessel::set_type(string vtype)
+void infantry::setType(string tempType)
 {
-    type = vtype;
+    this->type  = tempType;
 }
 
 
-string vessel::get_type() const
+string infantry::getType() const
 {
-    return type;
+    return this->type;
 }        
-
-
-void vessel::set_health(int h)
-{
-    health = h;
-}
-
-
-int vessel::get_health() const
-{
-    return health;
-}
     
 
-void vessel::set_team(string vteam)
+void infantry::setPistol(int ammo)
 {
-    team = vteam;
+    this->pistol = ammo;
 }
         
         
-string vessel::get_team() const
+int infantry::getPistol() const
 {
-    return team;
+    return this->pistol;
 }
 
-
-
-int vessel::get_total_blue_ships()
+void infantry::setHealth(int hp)
 {
-    return total_blue_ships;
+	this->health = hp;
 }
 
-
-int vessel::get_total_red_ships()
+int infantry::getHealth() const
 {
-    return total_red_ships;
+	return this->health;
 }
-
-
-
+void infantry::die()
+{
+	setName("");
+	setPistol(0);
+	setType("");
+	
+}
 // Below are the hit functions that are used to deduct health from vessels
 // that are attacked.
 
-void vessel::torpedo_hit()
-{
-    health = health - 50;  
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-          
-       health = 0; 
-    }
-}
 
-
-void vessel::battery_gun_hit()
-{
-    health = health - 1;
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-    
-       health = 0; 
-    }
-}
-
-void vessel::main_gun_hit()
-{
-    health = health - 30;
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-    
-       health = 0; 
-    }
-}
-
-void vessel::cruise_missile_hit()
-{
-    health = health - 40;
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-    
-       health = 0; 
-    }
-}
-
-void vessel::nuclear_missile_hit()
-{
-    health = health - 500;
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-    
-       health = 0; 
-    }
-}
-
- 
-void vessel::fighter_plane_hit()
-{
-    health = health - 20;
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-    
-       health = 0; 
-    }
-}    
-       
-void vessel::laser_hit()
-{
-    health = health - 250;
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-    
-       health = 0; 
-    }
-}   
-
-void vessel::plasma_cluster_nuke_hit()
-{
-    health = health - 2000;
-    if(health < 0)
-    {
-       if(get_team()=="Blue")
-          total_blue_ships--;
-       else if(get_team()=="Red")
-          total_red_ships--;
-    
-       health = 0; 
-
-    }
-}           
-  
-         
-              
-              
 // print is a general output function 
                                      
-void vessel::print() const
-{
-    cout << endl;
-    cout << "Vessel Name: " << get_name() << endl;
-    cout << "Vessel Type: " << get_type() << endl;
-    cout << "Vessel Health: " << get_health() << endl;
-}
+
 
 
 // display is an output function that is used to output attributes in the game display table
-
-void vessel::display() const
+void infantry::display() const
 {
-    cout << left << setw(17) << get_name()
-         << left << setw(19) << get_type()
-         << right << setw(6) << get_health();   
-    
+	cout << "Unit Name:   " <<  this->name << endl;
+	cout << "Unit Type:   " <<  this->type << endl;
+	cout << "Unit Health: " <<  this->health << endl;
+	
 }
 
