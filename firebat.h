@@ -15,7 +15,7 @@ class firebat: virtual public infantry
 {
     public:
         firebat();
-        firebat (string, string);
+        firebat (string tempName = "unknown", string tempType = "firebat");
         
         void setFlamethrower(int);
         int  getFlamethrower() const;
