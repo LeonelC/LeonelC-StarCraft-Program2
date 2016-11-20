@@ -79,18 +79,14 @@ int infantry::getHealth() const
 {
 	return this->health;
 }
+
+
+// sets a infantry's base class values to 0
 void infantry::die()
 {
-	setName("");
+	setHealth(0);
 	setPistol(0);
-	setType("");
-	
 }
-// Below are the hit functions that are used to deduct health from vessels
-// that are attacked.
-
-
-// print is a general output function 
                                      
 
 

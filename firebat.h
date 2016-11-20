@@ -11,31 +11,26 @@
 
 #include "infantry.h"
 
-class carrier: virtual public vessel
+class firebat: virtual public infantry
 {
     public:
-        carrier(string vname="Unknown", string vteam="Unknown", string vtype="Carrier", 
-                int fighter=30, int cruise=50);
+        firebat();
+        firebat (string, string);
         
-        void set_fighter_plane(int);
-        int get_fighter_plane() const;
+        void setFlamethrower(int);
+        int  getFlamethrower() const;
         
-        void set_cruise_missile(int);
-        int get_cruise_missile() const;
-
-        void launch_fighter_plane(vessel*);
-        void launch_cruise_missile(vessel*);
+        virtual void attack(infantry*);
+        virtual void renderAid(infantry*);
+        virtual void getAttacked(int);
+        virtual void receiveAid(int);
+        virtual void die();
+        virtual void speak() const;
         
-        virtual void light_attack(vessel*);
-        virtual void heavy_attack(vessel*);
-        virtual void sink();
-
-        virtual void print() const;
         virtual void display() const;
                 
     private:
-        int fighter_plane;
-        int cruise_missile;
+        int flamethrower;
     
 };    
 

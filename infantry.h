@@ -39,10 +39,10 @@ class infantry
         virtual void renderAid(infantry*) = 0;
         virtual void getAttacked(int) = 0;
         virtual void receiveAid(int) = 0;
-        virtual void die() = 0;
         virtual void speak() const = 0;
         
-        void display() const;
+        virtual void die();
+        virtual void display() const;
               
     private:
         string name;
