@@ -13,7 +13,6 @@
 using namespace std;
 
 #include "firebat.h"
-#include "infantry.h"
 
 firebat::firebat()
 		:infantry("Unknown","firebat") //call infantry's constructor with these inputs
