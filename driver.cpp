@@ -21,13 +21,15 @@ using namespace std;
 #include "infantry.h"
 #include "firebat.h"
 #include "ghost.h"
+#include "marine.h"
+#include "medic.h"
 
 
 // function prototypes
 void display_infantrys(infantry* ghost1, infantry* firebat1,
-                     infantry* ghost2, infantry* firebat2,
-                     infantry* ghost3,
-                     infantry* firebat3);
+                     infantry* marine1, infantry* marine2,
+                     infantry* medic,
+                     infantry* marine3);
 
 
 int main()
@@ -37,20 +39,20 @@ int main()
     // declare ships of different types for blue team
     ghost b1("Blue Destroyer","ghost");
     firebat b2("Blue Battleship","firebat");
-    ghost b3("Blue Carrier","ghost");
-    firebat b4("Blue Submarine","firebat"); 
-    ghost b5("Blue Sub Carrier","ghost");
-    firebat b6("Blue Super Ship","firebat");
+    marine b3("Blue Carrier","marine");
+    marine b4("Blue Submarine","marine"); 
+    medic b5("Blue Sub Carrier","medic");
+    marine b6("Blue Super Ship","marine");
       
     
     
     // declare ships of different types for red team
     ghost r1("Red Destroyer","ghost");
     firebat r2("Red Battleship","firebat");
-    ghost r3("Red Carrier","ghost");
-    firebat r4("Red Submarine","firebat");  
-    ghost r5("Red Sub Carrier","ghost");
-    firebat r6("Red Super Ship","firebat");    
+    marine r3("Red Carrier","marine");
+    marine r4("Red Submarine","marine");  
+    medic r5("Red Sub Carrier","medic");
+    marine r6("Red Super Ship","marine");    
      
         
      // declare base class pointers for infantrys
