@@ -1,4 +1,5 @@
-///////////////////////////////////////////////////////////////////
+ 
+ ///////////////////////////////////////////////////////////////////
 //
 //       vessel.h  Class Definition for vessel (base class)
 //
@@ -15,51 +16,39 @@
 
 using namespace std;
 
-class vessel
+class infantry
 {
     public:
-        vessel();
-        vessel(string, string, string);
+        infantry();
+        infantry(string, string);
         
-        void set_name(string);
-        string get_name() const;
+        void  setName(string);
+        string getName() const;
         
-        void set_type(string);
-        string get_type() const;
+        void  setType(string);
+        string getType() const;
         
-        void set_health(int);
-        int get_health() const;
+        void setHealth(int);
+        int  getHealth() const;
         
-        void set_team(string);
-        string get_team() const;
+        void setPistol(int);
+        int  getPistol() const;
         
-        static int get_total_blue_ships();
-        static int get_total_red_ships();
-                
-        virtual void torpedo_hit();
-        virtual void battery_gun_hit();
-        virtual void main_gun_hit();
-        virtual void cruise_missile_hit();
-        virtual void nuclear_missile_hit();
-        virtual void fighter_plane_hit();
-        virtual void laser_hit();
-        virtual void plasma_cluster_nuke_hit();
-                
-        virtual void light_attack(vessel*)=0;
-        virtual void heavy_attack(vessel*)=0;
-        virtual void sink()=0;
-                
-        virtual void print() const;
+    	//This set of abstract functions must be defined for each inheriting class
+        virtual void attack(infantry*) = 0;
+        virtual void renderAid(infantry*) = 0;
+        virtual void getAttacked(int) = 0;
+        virtual void receiveAid(int) = 0;
+        virtual void speak() const = 0;
+        
+        virtual void die();
         virtual void display() const;
               
     private:
         string name;
         string type;
-        string team;
         int health;
-        
-        static int total_blue_ships;
-        static int total_red_ships;
+        int pistol;
 
 };    
 

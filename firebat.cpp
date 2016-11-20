@@ -14,119 +14,75 @@ using namespace std;
 
 #include "firebat.h"
 
-
-carrier::carrier(string vname, string vteam, string vtype, int fighter, int cruise)
-                       : vessel(vname, vteam, vtype)
+firebat::firebat()
+		:infantry("Unknown","firebat") //call infantry's constructor with these inputs
 {
-    set_fighter_plane(fighter);
-    set_cruise_missile(cruise);
-    set_health(6000);
-    srand(time(NULL));
-    //cout << "Carrier Constructor" << endl;
+	setFlamethrower(100);
+}
+
+firebat::firebat(string tempName, string tempType)
+        : infantry(tempName, tempType) //call infantry's constructor with user defined inputs
+{
+    setFlamethrower(100);
 }
 
         
-void carrier::set_fighter_plane(int fighter)
+void firebat::setFlamethrower(int ammo)
 {
-    fighter_plane = fighter;
+    this->flamethrower = ammo;
 }
 
 
-int carrier::get_fighter_plane() const
+int firebat::getFlamethrower() const
 {
-    return fighter_plane;
+    return this->flamethrower;
 }
 
         
-void carrier::set_cruise_missile(int cruise)
+void firebat::die()
 {
-    cruise_missile = cruise;
+    infantry::die();    //calls infantry's method for death
+    this->setFlamethrower(0);
+    cout << this->getName() << "'s flame has been extinguished" << endl;
 }
     
 
-int carrier::get_cruise_missile() const
+void firebat::getAttacked(int damage) 
 {
-    return cruise_missile;
+    this->setHealth(this->getHealth() - damage);
+}
+
+void firebat::attack(infantry* beingAttacked)
+{
+	if (this->flamethrower > 0){
+		beingAttacked->getAttacked(20);                      //attacking an infantry unit for 20 damage
+		this->setFlamethrower(this->getFlamethrower() - 10); //reduce ammo by 10
+	}
+	
+	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
+		beingAttacked->die();
+	
+}
+void firebat::receiveAid(int healthBoost)
+{
+    this->setHealth(this->getHealth() + healthBoost);
+}
+
+void firebat::renderAid(infantry* beingHelped)
+{
+    cout << this->getName() <<": Sorry " << beingHelped->getName() 
+		 << ", I've got no first aid supplies. Keep thinking positive thoughts!" << endl;
 }
 
 
-void carrier::launch_fighter_plane(vessel* attacked_vessel)
+void firebat::speak() const
 {
-    if(fighter_plane!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        if(1+rand()%5 == 1)        
-                fighter_plane--;  
-                
-        attacked_vessel->fighter_plane_hit();
-        
-    }        
-}
-
-void carrier::launch_cruise_missile(vessel* attacked_vessel)
-{
-    if(cruise_missile!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        cruise_missile--;
-        attacked_vessel->cruise_missile_hit();
-    }    
-}
-
-
-void carrier::light_attack(vessel* attacked_vessel)
-{
-    int x;
-    
-  
-    for(x=1;x<=2;x++)
-       launch_fighter_plane(attacked_vessel);
-           
-    launch_cruise_missile(attacked_vessel);
-    
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-     
+    cout << this->getName() << ": Need a light?" << endl;
 }    
 
-void carrier::heavy_attack(vessel* attacked_vessel)
+void firebat::display() const
 {
-    int x;
-
-    for(x=1;x<=6;x++)
-       launch_fighter_plane(attacked_vessel);
-            
-    for(x=1;x<=3;x++)    
-       launch_cruise_missile(attacked_vessel);
-       
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-
-}    
-
-
-void carrier::sink()
-{
-   set_fighter_plane(0);
-   set_cruise_missile(0);
-}
-
-
-void carrier::print() const
-{
-    cout << endl;
-    vessel::print();
-    cout << "Fighter Planes: " << get_fighter_plane() << endl;
-    cout << "Cruise Missiles: " << get_cruise_missile() << endl;
-        
-}  
-
-
-void carrier::display() const
-{
-    vessel::display();
-    cout << right << setw(5) << " "
-         << right << setw(5) << " "
-         << right << setw(4) << get_cruise_missile()
-         << right << setw(4) << get_fighter_plane()
-         << endl;
+    infantry::display();
+	cout << "Unit ammo: " <<  this->flamethrower << endl;
      
 } 

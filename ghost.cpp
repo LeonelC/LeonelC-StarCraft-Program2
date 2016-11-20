@@ -1,93 +1,124 @@
 /////////////////////////////////////////////////////////////////////////////
 //
-//    destroyer.cpp  Class Functions for the destroyer Class (derived Class)
+//    ghost.cpp  Class Functions for the ghost Class (derived Class)
 //
 //    Created by Will McWhorter, Ph.D.
 //
 /////////////////////////////////////////////////////////////////////////////
 
 #include <iostream>
+#include <time.h>
+#include <stdlib.h>
 
 using namespace std;
 
 #include "ghost.h"
 
 
-destroyer::destroyer(string vname, string vteam, string vtype, int battery)
-                       : vessel(vname, vteam, vtype)
+ghost::ghost()
+	  : infantry("unknown", "ghost")
 {
-    set_battery_gun(battery);
-    set_health(2000);
-    //cout << "I'm a destroyer"<<endl;
+    this->setCloak(false);
+    this->setSniperRifle(20);
+    //cout << "I'm a ghost"<<endl;
+}
+ghost::ghost(string tempName, string tempType)
+      : infantry(tempName, tempType)
+{
+    this->setCloak(false);
+    this->setSniperRifle(20);
+    //cout << "I'm a ghost"<<endl;
 }
         
-void destroyer::set_battery_gun(int battery)
+void ghost::setSniperRifle(int ammo)
 {
-    battery_gun = battery;
+    this->sniperRifle = ammo;
 }
 
-int destroyer::get_battery_gun() const
+int ghost::getSniperRifle() const
 {
-    return battery_gun;
+    return this->sniperRifle; // ammunition left
 }
-        
-void destroyer::fire_battery_gun(vessel* attacked_vessel)
-{
-    if(battery_gun!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        battery_gun--;
-        attacked_vessel->battery_gun_hit();
-    }    
-}    
-
-void destroyer::light_attack(vessel* attacked_vessel)
+    
+void ghost::setCloak(bool status)
 {
     
-    int x;
+    this->cloak = status;
+}   
+
+bool ghost::getCloak() const
+{
+	return this->cloak;
+}
+
+void ghost::die() 
+{
+	infantry::die();
+	this->setSniperRifle(0);
+	cout << this->getName() << ": Never say die..." << endl;
+}
+
  
-    for(x=1;x<=15;x++)
-       fire_battery_gun(attacked_vessel);
-       
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
- 
-}    
 
-void destroyer::heavy_attack(vessel* attacked_vessel)
+void ghost::display() const
 {
-    int x;
 
-    for(x=1;x<=50;x++)
-       fire_battery_gun(attacked_vessel);
-       
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-
-    
-}  
-
-void destroyer::sink()
-{
-    set_battery_gun(0);
-}  
-
-void destroyer::print() const
-{
-    cout << endl;
-    vessel::print();
-    cout << "Battery Gun Rounds: " << get_battery_gun() << endl;
-    
-} 
-
-
-void destroyer::display() const
-{
-    //if(this->get_health()==0)
-        //this->sink();
-         
-    vessel::display();
-    cout << right << setw(5) << get_battery_gun()
-         << endl;
+    infantry::display();
+    cout << "Unit ammo: " <<  this->sniperRifle << endl;
+    cout << "Invisible: " <<  this->cloak << endl;
      
 } 
 
+void ghost::getAttacked(int damage) 
+{
+    if ( !getCloak() )										  //if not cloaked
+		this->setHealth(this->getHealth() - damage);          //take damage
+}
+
+void ghost::attack(infantry* beingAttacked)
+{
+	int currentAmmo = this->getSniperRifle();
+	this->setCloak(false);									  //if attacking, cloaking is off, I think?
+	if (currentAmmo > 0){
+		beingAttacked->getAttacked(20);                       //attacking an infantry unit for 20 damage
+		this->setSniperRifle(currentAmmo - 1);                //reduce ammo by 1
+	}
+	
+	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
+		beingAttacked->die();
+	
+}
+void ghost::receiveAid(int healthBoost)
+{
+    this->setHealth(this->getHealth() + healthBoost);
+}
+
+void ghost::renderAid(infantry* beingHelped)
+{
+	int friendlyHP = beingHelped->getHealth();
+	int survival;
+	string name = this->getName();
+	srand (time(0));
+	survival = rand() % 10 + 1;
+    
+    if (friendlyHP > 75)
+    	cout << name << ": Suck it up, buttercup." << endl;
+    	
+    else if (friendlyHP > 25 and friendlyHP < 75){
+        cout << name << ": You don't see me... I was never here." << endl;
+    	beingHelped->receiveAid(5);
+    }
+    
+    else {
+    	cout << name << ": You don't look so hot." << endl;
+    	if (survival <= 5)
+    		beingHelped->die();
+	}
+	
+}
+
+
+void ghost::speak() const
+{
+    cout << this->getName() << ": Somebody call for an exterminator?" << endl;
+}  
