@@ -8,146 +8,99 @@
 
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 using namespace std;
 
 #include "marine.h"
 
-
-
-battleship::battleship(string vname, string vteam, string vtype, int main, int cruise, int battery)
-                       : vessel(vname, vteam, vtype)
+marine::marine()
+		:infantry("Unknown","marine") //call infantry's constructor with these inputs
 {
-    set_main_gun(main);
-    set_cruise_missile(cruise);
-    set_battery_gun(battery);
-    set_health(5000);
-    //cout << "I'm a battleship." << endl;
+	setAssaultRifle(100);
+}
+
+marine::marine(string tempName, string tempType)
+        : infantry(tempName, tempType) //call infantry's constructor with user defined inputs
+{
+    setAssaultRifle(100);
 }
 
         
-void battleship::set_main_gun(int main)
+void marine::setAssaultRifle(int ammo)
 {
-    main_gun = main;
+    this->assaultRifle = ammo;
 }
 
 
-int battleship::get_main_gun() const
+int marine::getAssaultRifle() const
 {
-    return main_gun;
+    return this->assaultRifle;
 }
 
         
-void battleship::set_cruise_missile(int cruise)
+void marine::die()
 {
-    cruise_missile = cruise;
+    infantry::die();    //calls infantry's method for death
+    this->setAssaultRifle(0);
+    cout << this->getName() << " has gone to hell to regroup." << endl;
 }
     
 
-int battleship::get_cruise_missile() const
+void marine::getAttacked(int damage) 
 {
-    return cruise_missile;
+    this->setHealth(this->getHealth() - damage);
 }
 
-        
-void battleship::set_battery_gun(int battery)
+void marine::attack(infantry* beingAttacked)
 {
-    battery_gun = battery;
+	if (this->assaultRifle > 0){
+		beingAttacked->getAttacked(10);                      //attacking an infantry unit for 10 damage
+		this->setAssaultRifle(this->getAssaultRifle() - 10); //reduce ammo by 10
+	}
+	
+	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
+		beingAttacked->die();
+	
+}
+void marine::receiveAid(int healthBoost)
+{
+    this->setHealth(this->getHealth() + healthBoost);
 }
 
-
-int battleship::get_battery_gun() const
+void marine::renderAid(infantry* beingHelped)
 {
-    return battery_gun;
-}
-
-        
-void battleship::fire_main_gun(vessel* attacked_vessel)
-{
-    if(main_gun!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        main_gun--;
-        attacked_vessel->main_gun_hit();
-    }    
-}
-
-void battleship::launch_cruise_missile(vessel* attacked_vessel)
-{
-    if(cruise_missile!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        cruise_missile--;
-        attacked_vessel->cruise_missile_hit();
-    }    
-}
-
-void battleship::fire_battery_gun(vessel* attacked_vessel)
-{
-    if(battery_gun!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        battery_gun--;
-        attacked_vessel->battery_gun_hit();
-    }    
-}    
-
-void battleship::light_attack(vessel* attacked_vessel)
-{
-    int x;
-
-    launch_cruise_missile(attacked_vessel);
-        
-    for(x=1;x<=15;x++)
-       fire_battery_gun(attacked_vessel);
-       
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-
-}    
-
-void battleship::heavy_attack(vessel* attacked_vessel)
-{
-    int x;
- 
-    for(x=1;x<=10;x++)
-        fire_main_gun(attacked_vessel);
-           
-    for(x=1;x<=3;x++)    
-        launch_cruise_missile(attacked_vessel);
-        
-    for(x=1;x<=50;x++)
-        fire_battery_gun(attacked_vessel);
-        
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
+   int friendlyHP = beingHelped->getHealth();
+	int survival;
+	string name = this->getName();
+	srand (time(0));
+	survival = rand() % 10 + 1;
     
+    if (friendlyHP > 75)
+    	cout << name << ": You ain't hurt, boy! Now get up and fight!" << endl;
+    	
+    else if (friendlyHP > 25 and friendlyHP < 75){
+        cout << name << ": Let me patch you up, boy!." << endl;
+    	beingHelped->receiveAid(10);
+    }
+    
+    else {
+    	cout << name << ": Sorry, bro...You ain't gonna make it." << endl;
+    	if (survival <= 5)
+    		beingHelped->die();
+	}
+}
+
+
+void marine::speak() const
+{
+    cout << this->getName() << ": You wanna piece of me, boy?" << endl;
 }    
 
-
-void battleship::sink()
+void marine::display() const
 {
-    set_battery_gun(0);
-    set_main_gun(0);
-    set_cruise_missile(0);
-} 
-
-
-void battleship::print() const
-{
-    cout << endl;
-    vessel::print();
-    cout << "Main Gun Rounds: " << get_main_gun() << endl;
-    cout << "Cruise Missiles: " << get_cruise_missile() << endl;
-    cout << "Battery Gun Rounds: " << get_battery_gun() << endl;
-    
-}   
-
-
-void battleship::display() const
-{
-    vessel::display();
-    cout << right << setw(5) << get_battery_gun()
-         << right << setw(5) << get_main_gun()
-         << right << setw(4) << get_cruise_missile()
-         << endl;
+    infantry::display();
+	cout << "Unit ammo: " <<  this->assaultRifle << endl;
      
-}     
-
+} 

@@ -1,151 +1,79 @@
-/////////////////////////////////////////////////////////////////////////////
-//
-//    submarine.cpp  Class Functions for the submarine Class (derived Class)
-//
-//    Created by Will McWhorter, Ph.D.
-//
-/////////////////////////////////////////////////////////////////////////////
-
 #include <iostream>
-
+#include <cstdlib>
 using namespace std;
 
 #include "medic.h"
 
-
-
-submarine::submarine(string vname, string vteam, string vtype, int torp, int nuke)
-                       : vessel(vname, vteam, vtype)
+medic::medic()
+		:infantry("Unknown","medic") //call infantry's constructor with these inputs
 {
-    set_torpedo(torp);
-    set_nuclear_missile(nuke);
-    set_health(1000);
+	setBoosterShot(100);
+}
+
+medic::medic(string tempName, string tempType)
+        : infantry(tempName, tempType) //call infantry's constructor with user defined inputs
+{
+    setBoosterShot(100);
 }
 
         
-void submarine::set_torpedo(int torp)
+void medic::setBoosterShot(int shots)
 {
-    torpedo = torp;
+    this->boosterShot = shots;
 }
 
 
-
-int submarine::get_torpedo() const
+int medic::getBoosterShot() const
 {
-    return torpedo;
+    return this->boosterShot;
 }
 
         
-void submarine::set_nuclear_missile(int nuke)
+void medic::die()
 {
-    nuclear_missile = nuke;
+    infantry::die();    //calls infantry's method for death
+    this->setBoosterShot(0);
+    cout << this->getName() << " has gone to hell to regroup." << endl;
 }
     
 
-int submarine::get_nuclear_missile() const
+void medic::getAttacked(int damage) 
 {
-    return nuclear_missile;
+    this->setHealth(this->getHealth() - damage);
+}
+
+void medic::attack(infantry* beingAttacked)
+{
+	if (this->getPistol() > 0){
+		beingAttacked->getAttacked(5);                      //attacking an infantry unit for 5 damage
+		this->setPistol(this->getPistol() - 10); //reduce ammo by 10
+	}
+	
+	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
+		beingAttacked->die();
+	
+}
+void medic::receiveAid(int healthBoost)
+{
+    this->setHealth(this->getHealth() + healthBoost);
+}
+
+void medic::renderAid(infantry* beingHelped)
+{
+   	int friendlyHP = beingHelped->getHealth();
+	beingHelped->receiveAid(30);
+	this->setBoosterShot(this->getBoosterShot() - 1); //reduce ammo by 10
 }
 
 
-void submarine::fire_torpedo(vessel* attacked_vessel)
+void medic::speak() const
 {
-    if(torpedo!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        torpedo--;   
-        attacked_vessel->torpedo_hit();
-    }    
-}
-
-void submarine::launch_nuclear_missile(vessel* attacked_vessel)
-{
-    if(nuclear_missile!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        nuclear_missile--;
-        attacked_vessel->nuclear_missile_hit();
-    }    
-}
-
-
-void submarine::light_attack(vessel* attacked_vessel)
-{
-    int x;
-    
-    for(x=1;x<=2;x++)
-       fire_torpedo(attacked_vessel);
-       
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-       
+    cout << this->getName() << ": Prepped and ready." << endl;
 }    
 
-
-void submarine::heavy_attack(vessel* attacked_vessel)
+void medic::display() const
 {
-    int x;
-     
-
-    for(x=1;x<=2;x++)
-       fire_torpedo(attacked_vessel);
-           
-    launch_nuclear_missile(attacked_vessel);  
-      
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-         
-}    
-
-
-void submarine::sink()
-{
-     set_torpedo(0);
-     set_nuclear_missile(0);
-}
-
-
-void submarine::battery_gun_hit()
-{
-    // subs can't be damaged by battery gun
-}
-
-void submarine::main_gun_hit()
-{
-    // subs can't be damaged by main gun
-}
-
-void submarine::cruise_missile_hit()
-{
-    // subs can't be damaged by cruise missile
-}
-
-
-void submarine::fighter_plane_hit()
-{
-    // subs can't be damaged by fighter plane
-}
-
-
-
-void submarine::print() const
-{
-    cout << endl;
-    vessel::print();
-    cout << "Torpedos: " << get_torpedo() << endl;
-    cout << "Nuclear Missiles: " << get_nuclear_missile() << endl;
-        
-}  
-
-void submarine::display() const
-{
-    vessel::display();
-    cout << right << setw(5) << " "
-         << right << setw(5) << " "
-         << right << setw(4) << " "
-         << right << setw(4) << " "
-         << right << setw(4) << get_torpedo()
-         << right << setw(4) << get_nuclear_missile()
-         << endl;
+    infantry::display();
+	cout << "Unit ammo: " <<  this->boosterShot << endl;
      
 } 
-
-
