@@ -18,19 +18,16 @@ using namespace std;
 
 // include all the class definition files
 
-#include "vessel.h"
-#include "battleship.h"
-#include "destroyer.h"
-#include "carrier.h"
-#include "submarine.h"
-#include "submarine_carrier.h"
-#include "super_ship.h"
+#include "infantry.h"
+#include "firebat.h"
+#include "ghost.h"
+
 
 // function prototypes
-void display_vessels(vessel* my_destroyer, vessel* my_battleship,
-                     vessel* my_carrier, vessel* my_submarine,
-                     vessel* my_submarine_carrier,
-                     vessel* my_super_ship);
+void display_infantrys(infantry* ghost1, infantry* firebat1,
+                     infantry* ghost2, infantry* firebat2,
+                     infantry* ghost3,
+                     infantry* firebat3);
 
 
 int main()
@@ -38,38 +35,38 @@ int main()
     int x;
     
     // declare ships of different types for blue team
-    destroyer b1("Blue Destroyer","Blue");
-    battleship b2("Blue Battleship","Blue");
-    carrier b3("Blue Carrier","Blue");
-    submarine b4("Blue Submarine","Blue"); 
-    submarine_carrier b5("Blue Sub Carrier","Blue");
-    super_ship b6("Blue Super Ship","Blue");
+    ghost b1("Blue Destroyer","ghost");
+    firebat b2("Blue Battleship","firebat");
+    ghost b3("Blue Carrier","ghost");
+    firebat b4("Blue Submarine","firebat"); 
+    ghost b5("Blue Sub Carrier","ghost");
+    firebat b6("Blue Super Ship","firebat");
       
     
     
     // declare ships of different types for red team
-    destroyer r1("Red Destroyer","Red");
-    battleship r2("Red Battleship","Red");
-    carrier r3("Red Carrier","Red");
-    submarine r4("Red Submarine","Red");  
-    submarine_carrier r5("Red Sub Carrier","Red");
-    super_ship r6("Red Super Ship","Red");    
+    ghost r1("Red Destroyer","ghost");
+    firebat r2("Red Battleship","firebat");
+    ghost r3("Red Carrier","ghost");
+    firebat r4("Red Submarine","firebat");  
+    ghost r5("Red Sub Carrier","ghost");
+    firebat r6("Red Super Ship","firebat");    
      
         
-     // declare base class pointers for vessels
-     vessel* blue_destroyer;
-     vessel* blue_battleship;
-     vessel* blue_carrier;
-     vessel* blue_submarine;
-     vessel* blue_submarine_carrier;
-     vessel* blue_super_ship;
+     // declare base class pointers for infantrys
+     infantry* blue_destroyer;
+     infantry* blue_battleship;
+     infantry* blue_carrier;
+     infantry* blue_submarine;
+     infantry* blue_submarine_carrier;
+     infantry* blue_super_ship;
      
-     vessel* red_destroyer;
-     vessel* red_battleship;
-     vessel* red_carrier;
-     vessel* red_submarine; 
-     vessel* red_submarine_carrier;
-     vessel* red_super_ship;             
+     infantry* red_destroyer;
+     infantry* red_battleship;
+     infantry* red_carrier;
+     infantry* red_submarine; 
+     infantry* red_submarine_carrier;
+     infantry* red_super_ship;             
      
      // point the base class pointers at their corresponding derived class objects     
      blue_destroyer = &b1;
@@ -92,8 +89,8 @@ int main()
      // set up some stuff needed by the game processes   
      int turn;
      bool invalid;
-     vessel* attacking_ship;
-     vessel* ship_being_attacked;
+     infantry* attacking_ship;
+     infantry* ship_being_attacked;
      string choice;
      
      turn = 0;
@@ -106,11 +103,11 @@ int main()
          {
              system("cls");
                  
-             display_vessels(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-             display_vessels(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+             display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
+             display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
                               
           
-           // blue team select attacking vessel
+           // blue team select attacking infantry
            
            invalid=true;  // reset bad selection flag
            
@@ -119,7 +116,7 @@ int main()
              invalid = false;
              
         
-             cout << "Blue Team, Enter your attacking vessel. (BD, BB, BC, BS, BSC, BSS): ";
+             cout << "Blue Team, Enter your attacking infantry. (BD, BB, BC, BS, BSC, BSS): ";
              cin >> choice;
              
              if(choice=="BD")
@@ -137,20 +134,20 @@ int main()
              else
              {
                  invalid=true;
-                 cout << "Invalid Vessel" << endl;
+                 cout << "Invalid infantry" << endl;
                  system("pause");
                               
                  system("cls");
              
-                 display_vessels(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_vessels(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
+                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
                                     
              }  // end if
                       
             } // end while    
          
 
-           // blue team decide which vessel to attack
+           // blue team decide which infantry to attack
 
            invalid=true;  // reset bad selection flag
            
@@ -159,7 +156,7 @@ int main()
              invalid = false;
              
         
-             cout << "Blue Team, Enter the vessel you want to attack. (RD, RB, RC, RS, RSC, RSS): ";
+             cout << "Blue Team, Enter the infantry you want to attack. (RD, RB, RC, RS, RSC, RSS): ";
              cin >> choice;
              
              if(choice=="RD")
@@ -177,13 +174,13 @@ int main()
              else
              {
                  invalid=true;
-                 cout << "Invalid Vessel" << endl;
+                 cout << "Invalid infantry" << endl;
                  system("pause");
                               
                  system("cls");
              
-                 display_vessels(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_vessels(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
+                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
                     
 
              }  // end if
@@ -192,9 +189,9 @@ int main()
           
           
           
-            attacking_ship->heavy_attack(ship_being_attacked);
+            attacking_ship->attack(ship_being_attacked);
             
-            if(vessel::get_total_red_ships()==0)
+            if(red_destroyer->getHealth()==0 and red_battleship->getHealth()==0 and red_carrier->getHealth()==0 and red_submarine->getHealth()==0 and red_submarine_carrier->getHealth()==0 and red_super_ship->getHealth()==0)
             {
                 system("cls");
                 cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
@@ -221,11 +218,11 @@ int main()
               
              system("cls");
              
-             display_vessels(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-             display_vessels(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+             display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
+             display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
                
            
-           // red team select attacking vessel
+           // red team select attacking infantry
            
            invalid=true;  // reset bad selection flag
            
@@ -234,7 +231,7 @@ int main()
              invalid = false;
              
         
-             cout << "RED Team, Enter your attacking vessel. (RD, RB, RC, RS, RSC, RSS): ";
+             cout << "RED Team, Enter your attacking infantry. (RD, RB, RC, RS, RSC, RSS): ";
              cin >> choice;
              
              if(choice=="RD")
@@ -252,13 +249,13 @@ int main()
              else
              {
                  invalid=true;
-                 cout << "Invalid Vessel" << endl;
+                 cout << "Invalid infantry" << endl;
                  system("pause");
                               
                  system("cls");
              
-                 display_vessels(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_vessels(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
+                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
                     
 
              }  // end if
@@ -266,7 +263,7 @@ int main()
             } // end while    
          
 
-           // red team decide which vessel to attack
+           // red team decide which infantry to attack
 
            invalid=true;  // reset bad selection flag
            
@@ -275,7 +272,7 @@ int main()
              invalid = false;
              
         
-             cout << "RED Team, Enter the vessel you want to attack. (BD, BB, BC, BS, BSC, BSS): ";
+             cout << "RED Team, Enter the infantry you want to attack. (BD, BB, BC, BS, BSC, BSS): ";
              cin >> choice;
              
              if(choice=="BD")
@@ -293,22 +290,22 @@ int main()
              else
              {
                  invalid=true;
-                 cout << "Invalid Vessel" << endl;
+                 cout << "Invalid infantry" << endl;
                  system("pause");
                               
                  system("cls");
              
-                 display_vessels(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_vessels(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
+                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
                     
 
              }  // end if
                       
             } // end while            
           
-            attacking_ship->heavy_attack(ship_being_attacked);         
+            attacking_ship->attack(ship_being_attacked);         
  
-            if(vessel::get_total_blue_ships()==0)
+            if(blue_destroyer->getHealth()==0 and blue_battleship->getHealth()==0 and blue_carrier->getHealth()==0 and blue_submarine->getHealth()==0 and blue_submarine_carrier->getHealth()==0 and blue_super_ship->getHealth()==0 )
             {
                 system("cls");
                 cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
@@ -339,17 +336,17 @@ int main()
 
 
 
-//  Below is a general display function that outputs a team's vessels and their attributes
+//  Below is a general display function that outputs a team's infantrys and their attributes
 
-void display_vessels(vessel* my_destroyer, vessel* my_battleship,
-                     vessel* my_carrier, vessel* my_submarine,
-                     vessel* my_submarine_carrier, vessel* my_super_ship)
+void display_infantrys(infantry* my_destroyer, infantry* my_battleship,
+                     infantry* my_carrier, infantry* my_submarine,
+                     infantry* my_submarine_carrier, infantry* my_super_ship)
 {
-    
-    cout << endl;
+    /*
+    cout << edl;
     cout << left
-         << setw(17) << "Vessel Name"
-         << setw(18) << "Vessel Type"
+         << setw(17) << "infantry Name"
+         << setw(18) << "infantry Type"
          << right
          << setw(7) << "Health"
          << setw(5) << "BGun"
@@ -361,7 +358,7 @@ void display_vessels(vessel* my_destroyer, vessel* my_battleship,
          << setw(4) << "LZ"
          << setw(4) << "PCN"
          << endl;
-         
+         */
     cout << "------------------------------------------------------------------------------" << endl;
     
     my_destroyer -> display();
@@ -372,12 +369,12 @@ void display_vessels(vessel* my_destroyer, vessel* my_battleship,
     my_super_ship -> display();
      
     cout << endl;
-    
+   /* 
     if(my_destroyer -> get_team() == "Blue")
-        cout << "Total Blue Ships Remaining: " << vessel::get_total_blue_ships() << endl << endl;
+        cout << "Total Blue Ships Remaining: " << infantry::get_total_blue_ships() << endl << endl;
     else if(my_destroyer -> get_team() == "Red")
-        cout << "Total Red Ships Remaining: " << vessel::get_total_red_ships() << endl << endl;
-        
+        cout << "Total Red Ships Remaining: " << infantry::get_total_red_ships() << endl << endl;
+    */    
 
 }    
 
