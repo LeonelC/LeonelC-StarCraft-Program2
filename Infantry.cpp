@@ -94,9 +94,9 @@ void infantry::die()
 // display is an output function that is used to output attributes in the game display table
 void infantry::display() const
 {
-	cout << "Unit Name:   " <<  this->name << endl;
-	cout << "Unit Type:   " <<  this->type << endl;
-	cout << "Unit Health: " <<  this->health << endl;
+	cout << "Unit Name:         " <<  this->name << endl;
+	cout << "Unit Type:         " <<  this->type << endl;
+	cout << "Unit Health:       " <<  this->health << endl;
 	
 }
 
