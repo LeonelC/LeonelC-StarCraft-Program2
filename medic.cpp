@@ -62,7 +62,7 @@ void medic::renderAid(infantry* beingHelped)
 {
    	int friendlyHP = beingHelped->getHealth();
 	beingHelped->receiveAid(30);
-	this->setBoosterShot(this->getBoosterShot() - 1); //reduce ammo by 10
+	this->setBoosterShot(this->getBoosterShot() - 1); //reduce ammo by 1
 }
 
 
@@ -74,6 +74,7 @@ void medic::speak() const
 void medic::display() const
 {
     infantry::display();
-	cout << "Unit ammo: " <<  this->boosterShot << endl;
+	cout << "Unit boosters:     " <<  this->boosterShot << endl;
+	cout << "Unit ammo:         " <<  this->getPistol() << endl << endl;
      
 } 
