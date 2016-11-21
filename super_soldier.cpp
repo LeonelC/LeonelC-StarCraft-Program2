@@ -56,11 +56,11 @@ int superSoldier::getStickyGrenade() const
 void superSoldier::die()
 {
 	// this guy dies all over the place
-    marine::die();
-    ghost::die();
-    firebat::die();
-    medic::die();
-    
+    this->setAssaultRifle(0);
+    this->setSniperRifle(0);
+    this->setFlamethrower(0);
+    this->setPistol(0);
+    this->setBoosterShot(0);
     this->setStickyGrenade(0);
     this->setRocketLauncher(0);
     this->setHealth(0);
@@ -70,7 +70,8 @@ void superSoldier::die()
 
 void superSoldier::getAttacked(int damage) 
 {
-    this->setHealth(this->getHealth() - damage);
+	if ( !getCloak() )
+    	this->setHealth(this->getHealth() - damage);
 }
 
 void superSoldier::attack(infantry* beingAttacked)
