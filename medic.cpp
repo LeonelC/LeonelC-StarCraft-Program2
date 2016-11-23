@@ -33,7 +33,7 @@ void medic::die()
 {
     infantry::die();    //calls infantry's method for death
     this->setBoosterShot(0);
-    cout << this->getName() << " has gone to hell to regroup." << endl;
+    cout << this->getName() << ": Medic!" << endl;
 }
     
 
@@ -62,7 +62,19 @@ void medic::renderAid(infantry* beingHelped)
 {
    	int friendlyHP = beingHelped->getHealth();
 	beingHelped->receiveAid(30);
-	this->setBoosterShot(this->getBoosterShot() - 1); //reduce ammo by 1
+	
+    if (friendlyHP >= 75)
+    	cout << this->getName() << ": Here's some lotion, a comb, and a blowtorch. Good luck! (no heal)" << endl;
+    	
+    else if (friendlyHP > 0 and friendlyHP < 75){
+        cout << this->getName() << ": I'll get you fixed right up!" << endl;
+    	beingHelped->receiveAid(30);
+    	this->setBoosterShot(this->getBoosterShot() - 1);
+    }
+    else cout << this->getName() << ": I can't fix dead..." << endl;
+    	
+    
+ //reduce ammo by 1
 }
 
 
