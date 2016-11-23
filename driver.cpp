@@ -43,20 +43,19 @@ int main()
     int x;
     
     // declare ships of different types for blue team
-    ghost b1("Blue Ghost","ghost");
-    firebat b2("Blue Firebat","firebat");
-    marine b3("Blue Marine","marine");
-    medic b4("Blue Medic","medic");
-    superSoldier b5("Blue Super","Super Soldier");
-      
-    
+    ghost b1("Blue Ghost");
+    firebat b2("Blue Firebat");
+    marine b3("Blue Marine");
+    medic b4("Blue Medic");
+    superSoldier b5("Blue Super");
+
     
     // declare ships of different types for red team
-    ghost r1("Red Ghost","ghost");
-    firebat r2("Red Firebat","firebat");
-    marine r3("Red Marine","marine"); 
-    medic r4("Red Medic","medic");
-    superSoldier r5("Red Super","Super Soldier");    
+    ghost r1("Red Ghost");
+    firebat r2("Red Firebat");
+    marine r3("Red Marine"); 
+    medic r4("Red Medic");
+    superSoldier r5("Red Super");    
      
         
      // declare base class pointers for infantrys
@@ -96,8 +95,10 @@ int main()
      infantry* infantry_attacked;
      infantry* infantry_healer;
      infantry* healed_infantry;
+     infantry* chosen_infantry;
+     ghost* tempghost;
      string decision;
-     string choice;
+     int choice;
      
      turn = 0;
 
@@ -135,6 +136,8 @@ int main()
 		           	infantry_attacked = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
 
 		            attacking_infantry->attack(infantry_attacked);
+		            system("pause");
+		            system("cls");
 		            
 					if(red_Ghost->getHealth()==0 and red_Firebat->getHealth()==0 and red_Marine->getHealth()==0 and red_Medic->getHealth()==0 and red_Super->getHealth()==0)
 			            {
@@ -162,11 +165,55 @@ int main()
 			        	cout << "Enter your unit to be healed. (BG, BFB, BMA, BMD, BSS): ";
 			        	healed_infantry = chooseBlueUnit(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);
 					  
-						infantry_healer->renderAid(healed_infantry);		
+						infantry_healer->renderAid(healed_infantry);
+						system("pause");
+						system("cls");		
 					}
 				else if(decision == "other")
 					{
-						break;
+						cout << "1. Speak (you forfeit a turn)\n"
+								"2. Cloak a given unit (only Ghosts and Super Soldiers may cloak)\n"
+							    "3. return to attack/heal options.\n";
+						cin  >> choice;
+						switch(choice){
+							case 1: 
+								cout << " which unit would you like to hear from? (BG, BFB, BMA, BMD, BSS): ";
+								chooseBlueUnit(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super)->speak();
+								system("pause");
+								break;
+								
+							case 2:
+								cout << "which unit would you like to cloak? (BG, BSS): ";
+								chosen_infantry = chooseBlueUnit(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);
+								if (chosen_infantry->getType() == "ghost" or chosen_infantry->getType() == "Super Soldier"){
+								
+									tempghost = dynamic_cast<ghost*>(chosen_infantry); // This will return nullptr if x does not point
+                             									                   	   // to an object of type B
+									if (not tempghost)
+										tempghost->setCloak(true);
+								}
+								else{
+									 invalid2=true;
+					                 cout << "invalid Entry" << endl;
+					                 system("pause");
+					                              
+					                 system("cls");
+					             
+					                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+				                	 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);			
+								}
+								break;
+								
+							default:
+								invalid2=true;
+				                 cout << "Returning to initial choices" << endl;
+				                 system("pause");
+				                              
+				                 system("cls");
+				             
+				                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+			                	 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);							
+						}
 					}
 				else
 					{
@@ -174,7 +221,7 @@ int main()
 				                 cout << "Invalid Entry" << endl;
 				                 system("pause");
 				                              
-				                 //system("cls");
+				                 system("cls");
 				             
 				                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
 				                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
@@ -192,72 +239,119 @@ int main()
           {
               
             display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
-     display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
+     		display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
                 
 		invalid2=true;
 		while(invalid2)
 		{
 			invalid2 = false;
 			cout << "Red Team, Would you like to (Attack, Heal, Other):";
-	             cin >> decision;
-	             for(int i = 0; i< decision.length();i++)
-	             {
-	             	decision[i] = tolower(decision[i]);
-				 }
-				if(decision =="attack")
-	        		{
-		        				
-	       // red team select attacking infantry
-       				cout << "Enter your attacking infantry. (RG, RFB, RMA, RMD, RSS): ";
-       				
-       				attacking_infantry = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
-       				
-       				cout << "Red Team, Enter the infantry you want to attack. (BG, BFB, BMA, BMD, BSS): ";
-       				
-		           	infantry_attacked = chooseBlueUnit(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);
+             cin >> decision;
+             for(int i = 0; i< decision.length();i++)
+             {
+             	decision[i] = tolower(decision[i]);
+			 }
+			if(decision =="attack")
+        	{
+	        				
+       // red team select attacking infantry
+   				cout << "Enter your attacking infantry. (RG, RFB, RMA, RMD, RSS): ";
+   				
+   				attacking_infantry = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
+   				
+   				cout << "Red Team, Enter the infantry you want to attack. (BG, BFB, BMA, BMD, BSS): ";
+   				
+	           	infantry_attacked = chooseBlueUnit(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);
 
-		            attacking_infantry->attack(infantry_attacked);
-					if(blue_Ghost->getHealth()==0 and blue_Firebat->getHealth()==0 and blue_Marine->getHealth()==0 and blue_Medic->getHealth()==0 and  blue_Super->getHealth()==0 )
-	            	{
-		                system("cls");
-		                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-		                cout << "                        ";
-		                cout << "*********************************" << endl;
-		                cout << "                        ";
-		                cout << "        RED TEAM WINS!!!!!      " << endl;
-		                cout << "                        ";
-		                cout << "*********************************" << endl;
-		                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-		                cout << endl << endl << endl << endl << endl;                system("pause");
-		                return 0;
-	            	}
-		       		}
-		       	else if(decision == "heal")
-		       		{
-			           
-			        	cout << "Enter your healing unit. (RG, RFB, RMA, RMD, RSS): ";
-			        	infantry_healer = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
-			           
-			        	cout << "Enter your unit to be healed. (RG, RFB, RMA, RMD, RSS): ";
-			        	healed_infantry = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
-					  
-						infantry_healer->renderAid(healed_infantry);		
+	            attacking_infantry->attack(infantry_attacked);
+	            system("pause");
+				if(blue_Ghost->getHealth()==0 and blue_Firebat->getHealth()==0 and blue_Marine->getHealth()==0 and blue_Medic->getHealth()==0 and  blue_Super->getHealth()==0 )
+            	{
+	                system("cls");
+	                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+	                cout << "                        ";
+	                cout << "*********************************" << endl;
+	                cout << "                        ";
+	                cout << "        RED TEAM WINS!!!!!      " << endl;
+	                cout << "                        ";
+	                cout << "*********************************" << endl;
+	                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+	                cout << endl << endl << endl << endl << endl;                system("pause");
+	                return 0;
+            	}
+	       	}
+	       	
+	       	else if(decision == "heal")
+	       	{
+		           
+	        	cout << "Enter your healing unit. (RG, RFB, RMA, RMD, RSS): ";
+	        	infantry_healer = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
+	           
+	        	cout << "Enter your unit to be healed. (RG, RFB, RMA, RMD, RSS): ";
+	        	healed_infantry = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
+			  
+				infantry_healer->renderAid(healed_infantry);
+				system("pause");
+				system("cls");	
+			}
+			
+			else if(decision == "other")
+				{
+					cout << "1. Speak (you forfeit a turn)\n"
+							"2. Cloak a given unit (only Ghosts and Super Soldiers may cloak)\n"
+						    "3. return to attack/heal options.\n";
+					cin  >> choice;
+					switch(choice){
+						case 1: 
+							cout << " which unit would you like to hear from? (RG, RFB, RMA, RMD, RSS): ";
+							chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super)->speak();
+							system("pause");
+							system("cls");
+							break;
+						case 2:
+							cout << "which unit would you like to cloak? (RG, RSS): ";
+							chosen_infantry = chooseRedUnit(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
+							
+							if (chosen_infantry->getType() == "ghost" or chosen_infantry->getType() == "Super Soldier"){
+							
+								tempghost = dynamic_cast<ghost*>(chosen_infantry); // This will return nullptr if x does not point
+                         									                   	   // to an object of type B
+								if (not tempghost)
+									tempghost->setCloak(true);
+							}
+							else{
+							 invalid2=true;
+			                 cout << "invalid choice" << endl;
+			                 system("pause");
+			                              
+			                 system("cls");
+			             
+			                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+		                	 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);			
+							}
+							break;
+						default:
+							invalid2=true;
+			                 cout << "Returning to initial choices" << endl;
+			                 system("pause");
+			                              
+			                 system("cls");
+			             
+			                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+		                	 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);							
 					}
-				else if(decision == "other")
-					{
-						break;
-					}
-				else
-					{
-						invalid2=true;
-				                 cout << "Invalid Entry" << endl;
-				                 system("pause");
-				                              
-				                 //system("cls");
-				             
-				                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
-				                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
-					}
+				}
+			else
+			{
+				invalid2=true;
+                 cout << "Invalid Entry" << endl;
+                 system("pause");
+                              
+                 system("cls");
+             
+                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
+			}
 		}
 	    
 	    
@@ -267,7 +361,7 @@ int main()
       }  // end if (end of red team's turn)
           
                           
-        }  // end for
+    }  // end for
                                  
                                                              
 

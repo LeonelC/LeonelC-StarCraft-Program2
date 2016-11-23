@@ -65,7 +65,7 @@ void ghost::display() const
 
     infantry::display();
     cout << "Unit Sniper:       " <<  this->sniperRifle << endl;
-    cout << "Invisible:         " <<  this->cloak ? "cloaked" : "uncloaked";
+    cout << "Invisible:         " <<  ((this->getCloak() )? "cloaked" : "uncloaked");
 	cout << endl << endl;
      
 } 
