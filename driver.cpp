@@ -27,8 +27,7 @@ using namespace std;
 
 // function prototypes
 void display_infantrys(infantry* ghost1, infantry* firebat1,
-                     infantry* marine1, infantry* marine2,
-                     infantry* medic,
+                     infantry* marine1, infantry* medic,
                      infantry* super);
 
 
@@ -40,50 +39,44 @@ int main()
     ghost b1("Blue Ghost","ghost");
     firebat b2("Blue Firebat","firebat");
     marine b3("Blue Marine","marine");
-    marine b4("Blue Submarine","marine"); 
-    medic b5("Blue Sub Carrier","medic");
-    superSoldier b6("Blue Super","Super Soldier");
+    medic b4("Blue Medic","medic");
+    superSoldier b5("Blue Super","Super Soldier");
       
     
     
     // declare ships of different types for red team
     ghost r1("Red Ghost","ghost");
     firebat r2("Red Firebat","firebat");
-    marine r3("Red Marine","marine");
-    marine r4("Red Submarine","marine");  
-    medic r5("Red Medic","medic");
-    superSoldier r6("Red Super","Super Soldier");    
+    marine r3("Red Marine","marine"); 
+    medic r4("Red Medic","medic");
+    superSoldier r5("Red Super","Super Soldier");    
      
         
      // declare base class pointers for infantrys
-     infantry* blue_destroyer;
-     infantry* blue_battleship;
-     infantry* blue_carrier;
-     infantry* blue_submarine;
-     infantry* blue_submarine_carrier;
-     infantry* blue_super_ship;
+     infantry* blue_Ghost;
+     infantry* blue_Firebat;
+     infantry* blue_Marine;
+     infantry* blue_Medic;
+     infantry* blue_Super;
      
-     infantry* red_destroyer;
-     infantry* red_battleship;
-     infantry* red_carrier;
-     infantry* red_submarine; 
-     infantry* red_submarine_carrier;
-     infantry* red_super_ship;             
+     infantry* red_Ghost;
+     infantry* red_Firebat;
+     infantry* red_Marine;
+     infantry* red_Medic;
+     infantry* red_Super;             
      
      // point the base class pointers at their corresponding derived class objects     
-     blue_destroyer = &b1;
-     blue_battleship = &b2;
-     blue_carrier = &b3;
-     blue_submarine = &b4;
-     blue_submarine_carrier = &b5;
-     blue_super_ship = &b6;
+     blue_Ghost = &b1;
+     blue_Firebat = &b2;
+     blue_Marine = &b3;
+     blue_Medic = &b4;
+     blue_Super = &b5;
      
-     red_destroyer = &r1;
-     red_battleship = &r2;
-     red_carrier = &r3;
-     red_submarine = &r4; 
-     red_submarine_carrier = &r5;
-     red_super_ship = &r6;        
+     red_Ghost = &r1;
+     red_Firebat = &r2;
+     red_Marine = &r3;
+     red_Medic = &r4;
+     red_Super = &r5;        
      
          
      // beginning of the main game processes      
@@ -91,8 +84,12 @@ int main()
      // set up some stuff needed by the game processes   
      int turn;
      bool invalid;
-     infantry* attacking_ship;
-     infantry* ship_being_attacked;
+     bool invalid2;
+     infantry* attacking_infantry;
+     infantry* infantry_attacked;
+     infantry* infantry_healer;
+     infantry* healed_infantry;
+     string decision;
      string choice;
      
      turn = 0;
@@ -103,111 +100,208 @@ int main()
      
          if(turn%2==0)   // if it's blue team's turn
          {
-             system("cls");
+             //system("cls");
                  
-             display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-             display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
-                              
-          
-           // blue team select attacking infantry
-           
-           invalid=true;  // reset bad selection flag
-           
-           while(invalid)
-           {
-             invalid = false;
-             
-        
-             cout << "Blue Team, Enter your attacking infantry. (BD, BB, BC, BS, BSC, BSS): ";
-             cin >> choice;
-             
-             if(choice=="BD")
-                 attacking_ship = blue_destroyer;
-             else if(choice=="BB")
-                 attacking_ship = blue_battleship;
-             else if(choice=="BC")
-                 attacking_ship = blue_carrier;
-             else if(choice=="BS")
-                 attacking_ship = blue_submarine;
-             else if(choice=="BSC")
-                 attacking_ship = blue_submarine_carrier;
-             else if(choice=="BSS")
-                 attacking_ship = blue_super_ship;
-             else
-             {
-                 invalid=true;
-                 cout << "Invalid infantry" << endl;
-                 system("pause");
-                              
-                 system("cls");
-             
-                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
-                                    
-             }  // end if
-                      
-            } // end while    
-         
-
-           // blue team decide which infantry to attack
-
-           invalid=true;  // reset bad selection flag
-           
-           while(invalid)
-           {
-             invalid = false;
-             
-        
-             cout << "Blue Team, Enter the infantry you want to attack. (RD, RB, RC, RS, RSC, RSS): ";
-             cin >> choice;
-             
-             if(choice=="RD")
-                 ship_being_attacked = red_destroyer;
-             else if(choice=="RB")
-                 ship_being_attacked = red_battleship;
-             else if(choice=="RC")
-                 ship_being_attacked = red_carrier;
-             else if(choice=="RS")
-                 ship_being_attacked = red_submarine;
-             else if(choice=="RSC")
-                 ship_being_attacked = red_submarine_carrier;
-             else if(choice=="RSS")
-                 ship_being_attacked = red_super_ship;
-             else
-             {
-                 invalid=true;
-                 cout << "Invalid infantry" << endl;
-                 system("pause");
-                              
-                 system("cls");
-             
-                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
-                    
-
-             }  // end if
-                      
-            } // end while            
-          
-          
-          
-            attacking_ship->attack(ship_being_attacked);
+             display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+             display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
+                        
+				invalid2=true;
+				while(invalid2)
+				{
+					invalid2 = false;
+					cout << "Blue Team, Would you like to (Attack, Heal, Other):";
+			             cin >> decision;
+			             for(int i = 0; i< decision.length();i++)
+			             {
+			             	decision[i] = tolower(decision[i]);
+						 }
+						if(decision =="attack")
+			        		{
+				        				
+		           // blue team select attacking infantry
+		           
+					           invalid=true;  // reset bad selection flag
+					           
+					           while(invalid)
+					           {
+					             invalid = false;
+					             
+					             
+					             cout << "Enter your attacking infantry. (BG, BFB, BMA, BMD, BSS): ";
+					             cin >> choice;
+					             
+					             if(choice=="BG")
+					                 attacking_infantry = blue_Ghost;
+					             else if(choice=="BFB")
+					                 attacking_infantry = blue_Firebat;
+					             else if(choice=="BMA")
+					                 attacking_infantry = blue_Marine;
+					             else if(choice=="BMD")
+					                 attacking_infantry = blue_Medic;
+					             else if(choice=="BSS")
+					                 attacking_infantry = blue_Super;
+					             else
+					             {
+					                 invalid=true;
+					                 cout << "Invalid infantry" << endl;
+					                 system("pause");
+					                              
+					                 //system("cls");
+					             
+					                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+					                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
+					                                    
+					             }  // end if
+					                      
+					            } // end while    
+					         
+					
+					           // blue team decide which infantry to attack
+					
+					           invalid=true;  // reset bad selection flag
+					           
+					           while(invalid)
+					           {
+					             invalid = false;
+					             
+					        
+					             cout << "Blue Team, Enter the infantry you want to attack. (RG, RFB, RMA, RMD, RSS): ";
+					             cin >> choice;
+					             
+					             if(choice=="RG")
+					                 infantry_attacked = red_Ghost;
+					             else if(choice=="RFB")
+					                 infantry_attacked = red_Firebat;
+					             else if(choice=="RMA")
+					                 infantry_attacked = red_Marine;
+					             else if(choice=="RMD")
+					                 infantry_attacked = red_Medic;
+					             else if(choice=="RSS")
+					                 infantry_attacked = red_Super;
+					             else
+					             {
+					                 invalid=true;
+					                 cout << "Invalid infantry" << endl;
+					                 system("pause");
+					                              
+					                 //system("cls");
+					             
+					                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+					                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
+					                    
+					
+					             }  // end if
+					                      
+					            } // end while            
+					          
+					          
+					          
+					            attacking_infantry->attack(infantry_attacked);
+					            if(red_Ghost->getHealth()==0 and red_Firebat->getHealth()==0 and red_Marine->getHealth()==0 and red_Medic->getHealth()==0 and red_Super->getHealth()==0)
+						            {
+						                system("cls");
+						                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+						                cout << "                        ";
+						                cout << "*********************************" << endl;
+						                cout << "                        ";
+						                cout << "        BLUE TEAM WINS!!!!!      " << endl;
+						                cout << "                        ";
+						                cout << "*********************************" << endl;
+						                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
+						                cout << endl << endl << endl << endl << endl;
+						                system("pause");
+						                return 0;
+						            }
+				       		}
+//decision == heal				       		
+				       	else if(decision == "heal")
+				       		{
+				       		invalid=true;  // reset bad selection flag
+					           
+					           while(invalid)
+						           {
+						             invalid = false;
+						             
+						             
+						             cout << "Enter your healing unit. (BG, BFB, BMA, BMD, BSS): ";
+						             cin >> choice;
+						             
+						             if(choice=="BG")
+						                 infantry_healer = blue_Ghost;
+						             else if(choice=="BFB")
+						                 infantry_healer = blue_Firebat;
+						             else if(choice=="BMA")
+						                 infantry_healer = blue_Marine;
+						             else if(choice=="BMD")
+						                 infantry_healer = blue_Medic;
+						             else if(choice=="BSS")
+						                 infantry_healer = blue_Super;
+						             else
+						             {
+						                 invalid=true;
+						                 cout << "Invalid infantry" << endl;
+						                 system("pause");
+						                              
+						                 //system("cls");
+						             
+						                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+						                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
+						                                    
+						             }  // end if
+						                      
+						            }
+						        invalid = true;
+								while(invalid)
+						           {
+						             invalid = false;
+						             
+						             
+						             cout << "Enter your unit to be healed. (BG, BFB, BMA, BMD, BSS): ";
+						             cin >> choice;
+						             
+						             if(choice=="BG")
+						                 healed_infantry = blue_Ghost;
+						             else if(choice=="BFB")
+						                 healed_infantry = blue_Firebat;
+						             else if(choice=="BMA")
+						                 healed_infantry = blue_Marine;
+						             else if(choice=="BMD")
+						                 healed_infantry = blue_Medic;
+						             else if(choice=="BSS")
+						                 healed_infantry = blue_Super;
+						             else
+						             {
+						                 invalid=true;
+						                 cout << "Invalid infantry" << endl;
+						                 system("pause");
+						                              
+						                 //system("cls");
+						             
+						                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+						                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
+						                                    
+						             }  // end if
+						                      
+						            }
+								infantry_healer->renderAid(healed_infantry);		
+							}
+						else if(decision == "other")
+							{
+								break;
+							}
+						else
+							{
+								invalid2=true;
+						                 cout << "Invalid Entry" << endl;
+						                 system("pause");
+						                              
+						                 //system("cls");
+						             
+						                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+						                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);
+							}
+				}
             
-            if(red_destroyer->getHealth()==0 and red_battleship->getHealth()==0 and red_carrier->getHealth()==0 and red_submarine->getHealth()==0 and red_submarine_carrier->getHealth()==0 and red_super_ship->getHealth()==0)
-            {
-                system("cls");
-                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-                cout << "                        ";
-                cout << "*********************************" << endl;
-                cout << "                        ";
-                cout << "        BLUE TEAM WINS!!!!!      " << endl;
-                cout << "                        ";
-                cout << "*********************************" << endl;
-                cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
-                cout << endl << endl << endl << endl << endl;
-                system("pause");
-                return 0;
-            }
             
             
           
@@ -218,10 +312,10 @@ int main()
           else if(turn%2==1)  // else if it's red team's turn
           {
               
-             system("cls");
+            // system("cls");
              
-             display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-             display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+             display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+             display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
                
            
            // red team select attacking infantry
@@ -233,21 +327,19 @@ int main()
              invalid = false;
              
         
-             cout << "RED Team, Enter your attacking infantry. (RD, RB, RC, RS, RSC, RSS): ";
+             cout << "RED Team, Enter your attacking infantry. (RG, RFB, RME, RMD, RSS): ";
              cin >> choice;
              
-             if(choice=="RD")
-                 attacking_ship = red_destroyer;
-             else if(choice=="RB")
-                 attacking_ship = red_battleship;
-             else if(choice=="RC")
-                 attacking_ship = red_carrier;
-             else if(choice=="RS")
-                 attacking_ship = red_submarine;
-             else if(choice=="RSC")
-                 attacking_ship = red_submarine_carrier;
+             if(choice=="RG")
+                 attacking_infantry = red_Ghost;
+             else if(choice=="RFB")
+                 attacking_infantry = red_Firebat;
+             else if(choice=="RMA")
+                 attacking_infantry = red_Marine;
+             else if(choice=="RMD")
+                 attacking_infantry = red_Medic;
              else if(choice=="RSS")
-                 attacking_ship = red_super_ship;
+                 attacking_infantry = red_Super;
              else
              {
                  invalid=true;
@@ -256,8 +348,8 @@ int main()
                               
                  system("cls");
              
-                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
                     
 
              }  // end if
@@ -274,21 +366,19 @@ int main()
              invalid = false;
              
         
-             cout << "RED Team, Enter the infantry you want to attack. (BD, BB, BC, BS, BSC, BSS): ";
+             cout << "RED Team, Enter the infantry you want to attack. (BG, BFB, BMA, BMD, BSS): ";
              cin >> choice;
              
-             if(choice=="BD")
-                 ship_being_attacked = blue_destroyer;
-             else if(choice=="BB")
-                 ship_being_attacked = blue_battleship;
-             else if(choice=="BC")
-                 ship_being_attacked = blue_carrier;
-             else if(choice=="BS")
-                 ship_being_attacked = blue_submarine;
-             else if(choice=="BSC")
-                 ship_being_attacked = blue_submarine_carrier;
+             if(choice=="BG")
+                 infantry_attacked = blue_Ghost;
+             else if(choice=="BFB")
+                 infantry_attacked = blue_Firebat;
+             else if(choice=="BMA")
+                 infantry_attacked = blue_Marine;
+             else if(choice=="BMD")
+                 infantry_attacked = blue_Medic;
              else if(choice=="BSS")
-                 ship_being_attacked = blue_super_ship;
+                 infantry_attacked = blue_Super;
              else
              {
                  invalid=true;
@@ -297,17 +387,17 @@ int main()
                               
                  system("cls");
              
-                 display_infantrys(blue_destroyer, blue_battleship, blue_carrier, blue_submarine, blue_submarine_carrier, blue_super_ship);  
-                 display_infantrys(red_destroyer, red_battleship, red_carrier, red_submarine, red_submarine_carrier, red_super_ship);  
+                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
+                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
                     
 
              }  // end if
                       
             } // end while            
           
-            attacking_ship->attack(ship_being_attacked);         
+            attacking_infantry->attack(infantry_attacked);         
  
-            if(blue_destroyer->getHealth()==0 and blue_battleship->getHealth()==0 and blue_carrier->getHealth()==0 and blue_submarine->getHealth()==0 and blue_submarine_carrier->getHealth()==0 and blue_super_ship->getHealth()==0 )
+            if(blue_Ghost->getHealth()==0 and blue_Firebat->getHealth()==0 and blue_Marine->getHealth()==0 and blue_Medic->getHealth()==0 and  blue_Super->getHealth()==0 )
             {
                 system("cls");
                 cout << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl << endl;
@@ -340,9 +430,9 @@ int main()
 
 //  Below is a general display function that outputs a team's infantrys and their attributes
 
-void display_infantrys(infantry* my_destroyer, infantry* my_battleship,
-                     infantry* my_carrier, infantry* my_submarine,
-                     infantry* my_submarine_carrier, infantry* my_super_ship)
+void display_infantrys(infantry* my_Ghost, infantry* my_Firebat,
+                     infantry* my_Marine, infantry* my_Medic,
+                     infantry* my_Super)
 {
     /*
     cout << edl;
@@ -363,18 +453,17 @@ void display_infantrys(infantry* my_destroyer, infantry* my_battleship,
          */
     cout << "------------------------------------------------------------------------------" << endl;
     
-    my_destroyer -> display();
-    my_battleship -> display();
-    my_carrier -> display();
-    my_submarine -> display();    
-    my_submarine_carrier -> display();
-    my_super_ship -> display();
+    my_Ghost -> display();
+    my_Firebat -> display();
+    my_Marine -> display();
+    my_Medic -> display();    
+    my_Super -> display();
      
     cout << endl;
    /* 
-    if(my_destroyer -> get_team() == "Blue")
+    if(my_Ghost -> get_team() == "Blue")
         cout << "Total Blue Ships Remaining: " << infantry::get_total_blue_ships() << endl << endl;
-    else if(my_destroyer -> get_team() == "Red")
+    else if(my_Ghost -> get_team() == "Red")
         cout << "Total Red Ships Remaining: " << infantry::get_total_red_ships() << endl << endl;
     */    
 
