@@ -82,6 +82,7 @@ void superSoldier::attack(infantry* beingAttacked)
 	srand (time(0));
 	luck = rand() % 10 + 1;
 	
+	this->setCloak(false);
 	switch(luck) {                                            //supersoldier is pretty particular about weapons used for a situation
 	case 1: if (this->getPistol() > 0){                       //critical miss
 			this->setPistol(getPistol() - 1);
@@ -91,13 +92,13 @@ void superSoldier::attack(infantry* beingAttacked)
 	case 2:
 	case 3:
 	case 4: if (this->getAssaultRifle() > 0){
-			this->setAssaultRifle(getAssaultRifle() - 1);
+			this->setAssaultRifle(getAssaultRifle() - 2);
 			damage = 10;
 			} break;
 			
 	case 5: 
 	case 6: if (this->getFlamethrower() > 0){
-			this->setFlamethrower(getFlamethrower() - 1);
+			this->setFlamethrower(getFlamethrower() - 10);
 			damage = 20;
 			} break;
 	
@@ -153,7 +154,7 @@ void superSoldier::display() const
 	cout << "Unit Pistol:       " <<  this->getPistol() << endl;
     cout << "Unit Rifle:        " <<  this->getAssaultRifle() << endl;
     cout << "Unit Sniper:       " <<  this->getSniperRifle() << endl;
-    cout << "Invisible:         " <<  this->getCloak() ? "cloaked" : "uncloaked";
+    cout << "Invisible:         " <<  ((this->getCloak() )? "cloaked" : "uncloaked");
     cout << endl;
 	cout << "Unit flamethrower: " <<  this->getFlamethrower() << endl;
 	cout << "Unit Stickies:     " <<  this->getStickyGrenade() << endl;

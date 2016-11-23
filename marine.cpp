@@ -57,7 +57,7 @@ void marine::attack(infantry* beingAttacked)
 {
 	if (this->assaultRifle > 0){
 		beingAttacked->getAttacked(10);                      //attacking an infantry unit for 10 damage
-		this->setAssaultRifle(this->getAssaultRifle() - 10); //reduce ammo by 10
+		this->setAssaultRifle(this->getAssaultRifle() - 2); //reduce ammo by 4
 	}
 	
 	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
