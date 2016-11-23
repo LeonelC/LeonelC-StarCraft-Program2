@@ -83,6 +83,6 @@ void firebat::speak() const
 void firebat::display() const
 {
     infantry::display();
-	cout << "Unit ammo: " <<  this->flamethrower << endl;
+	cout << "Unit flamethrower: " <<  this->flamethrower << endl << endl;
      
 } 

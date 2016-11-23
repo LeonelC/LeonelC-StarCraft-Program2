@@ -101,6 +101,6 @@ void marine::speak() const
 void marine::display() const
 {
     infantry::display();
-	cout << "Unit ammo: " <<  this->assaultRifle << endl;
+	cout << "Unit Rifle:        " <<  this->assaultRifle << endl << endl;;
      
 } 

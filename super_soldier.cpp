@@ -11,137 +11,152 @@
 
 
 #include <iostream>
+#include <cstdlib>
+#include <ctime>
 
 #include "super_soldier.h"
 
 using namespace std;
 
-super_ship::super_ship(string vname, string vteam, string vtype, 
-    int dbgun, int bbgun, int mgun, int bcruise,  
-    int fighter, int ccruise, int torp, int nuke)
-    :vessel(vname,vteam,vtype),destroyer(vname,vteam,vtype,dbgun),
-     battleship(vname,vteam,vtype,mgun,bcruise,bbgun),
-     carrier(vname,vteam,vtype,fighter,ccruise),
-     submarine(vname,vteam,vtype,torp,nuke)
+superSoldier::superSoldier(string tempName, string tempType)
+    :infantry(tempName, tempType), marine(tempName, tempType),
+     firebat(tempName, tempType),
+     ghost(tempName, tempType),
+     medic(tempName, tempType)
 {
-     set_laser(10); 
-     set_plasma_cluster_nuke(4);
-     set_health(8000);
-     //cout << "I'm a super ship" << endl;
+     setRocketLauncher(10); 
+     setStickyGrenade(4);
+     this->setHealth(150);
+     //cout << "I'm a super soldier" << endl;
 }
 
 
-void super_ship::set_laser(int vlaser)
+void superSoldier::setRocketLauncher(int rockets)
 {
-    laser = vlaser;
+    this->rocketLauncher = rockets;
 }
     
 
-int super_ship::get_laser() const
+int superSoldier::getRocketLauncher() const
 {
-    return laser;
+    return this->rocketLauncher;
 }
 
-void super_ship::set_plasma_cluster_nuke(int plasma)
+void superSoldier::setStickyGrenade(int nades)
 {
-    plasma_cluster_nuke = plasma;
+    this->stickyGrenade = nades;
 }
     
 
-int super_ship::get_plasma_cluster_nuke() const
+int superSoldier::getStickyGrenade() const
 {
-    return plasma_cluster_nuke;
+    return this->stickyGrenade;
 }
 
-void super_ship::fire_laser(vessel* attacked_vessel)
+void superSoldier::die()
 {
-    if(this->laser!=0 && this->get_health()!=0 && attacked_vessel->get_health()!=0)
-    {
-        laser--; 
-        attacked_vessel->laser_hit();
-    }    
+	// this guy dies all over the place
+    this->setAssaultRifle(0);
+    this->setSniperRifle(0);
+    this->setFlamethrower(0);
+    this->setPistol(0);
+    this->setBoosterShot(0);
+    this->setStickyGrenade(0);
+    this->setRocketLauncher(0);
+    this->setHealth(0);
+    cout << this->getName() << ": What is dead, may never die..." << endl;
 }
-
-
-void super_ship::fire_plasma_cluster_nuke(vessel* attacked_vessel)
-{
-
-    if(this->plasma_cluster_nuke!=0 && this->get_health()!=0 && attacked_vessel->get_health()!= 0)
-    {
-        plasma_cluster_nuke--; 
-        attacked_vessel->plasma_cluster_nuke_hit();
-    }    
-}
-
-
-void super_ship::light_attack(vessel* attacked_vessel)
-{
-    int x;
     
 
-    destroyer::light_attack(attacked_vessel);
-    battleship::light_attack(attacked_vessel);     
-    submarine::light_attack(attacked_vessel);
-    carrier::light_attack(attacked_vessel);
-    
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-        
+void superSoldier::getAttacked(int damage) 
+{
+	if ( !getCloak() )
+    	this->setHealth(this->getHealth() - damage);
+}
+
+void superSoldier::attack(infantry* beingAttacked)
+{
+	int luck, damage;
+	
+	string name = this->getName();
+	srand (time(0));
+	luck = rand() % 10 + 1;
+	
+	switch(luck) {                                            //supersoldier is pretty particular about weapons used for a situation
+	case 1: if (this->getPistol() > 0){                       //critical miss
+			this->setPistol(getPistol() - 1);
+			damage = 5;
+			} break;
+			
+	case 2:
+	case 3:
+	case 4: if (this->getAssaultRifle() > 0){
+			this->setAssaultRifle(getAssaultRifle() - 1);
+			damage = 10;
+			} break;
+			
+	case 5: 
+	case 6: if (this->getFlamethrower() > 0){
+			this->setFlamethrower(getFlamethrower() - 1);
+			damage = 20;
+			} break;
+	
+	case 7: 
+	case 8: if (this->getSniperRifle() > 0){
+			this->setSniperRifle(getSniperRifle() - 1);
+			damage = 20;
+			} break;
+		
+	case 9: if (this->getStickyGrenade() > 0){
+			this->setStickyGrenade(getStickyGrenade() - 1);
+			damage = 30;
+			} break;
+	case 10:if (this->getRocketLauncher() > 0){               //critical hit
+			this->setRocketLauncher(getRocketLauncher() - 1);
+			damage = 40;
+			} break;
+	}  // end switch
+	
+	if (damage == 0 and this->getPistol() > 0) {             //in case he didn't have ammo pulls out pistol
+			this->setPistol(getPistol() - 1);
+			damage = 5;
+	}
+	beingAttacked->getAttacked(damage);                      //attacking an infantry unit for random damage
+
+	
+	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
+		beingAttacked->die();
+	
+}
+void superSoldier::receiveAid(int healthBoost)
+{
+    this->setHealth(this->getHealth() + healthBoost);
+}
+
+void superSoldier::renderAid(infantry* beingHelped)
+{
+   	int friendlyHP = beingHelped->getHealth();
+	beingHelped->receiveAid(30);
+	this->setBoosterShot(this->getBoosterShot() - 1); //reduce ammo by 1
+}
+
+
+void superSoldier::speak() const
+{
+    cout << this->getName() << ": Y'all are about to get some good ol' fashioned discipline." << endl;
 }    
 
-
-void super_ship::heavy_attack(vessel* attacked_vessel)
+void superSoldier::display() const
 {
-    destroyer::heavy_attack(attacked_vessel);
-    battleship::heavy_attack(attacked_vessel);
-    submarine::heavy_attack(attacked_vessel);
-    carrier::heavy_attack(attacked_vessel);  
-    fire_laser(attacked_vessel);  
-    fire_plasma_cluster_nuke(attacked_vessel);
-    
-    if (attacked_vessel->get_health() == 0)
-        attacked_vessel->sink();
-
-}   
-
-
-void super_ship::sink()
-{
-     destroyer::sink();
-     battleship::sink();
-     submarine::sink();
-     carrier::sink();
-     set_laser(0);
-     set_plasma_cluster_nuke(0);
-}
-
-
-
-void super_ship::print() const
-{
+    infantry::display();
+    cout << "Unit boosters:     " <<  this->getBoosterShot() << endl;
+	cout << "Unit Pistol:       " <<  this->getPistol() << endl;
+    cout << "Unit Rifle:        " <<  this->getAssaultRifle() << endl;
+    cout << "Unit Sniper:       " <<  this->getSniperRifle() << endl;
+    cout << "Invisible:         " <<  this->getCloak() ? "cloaked" : "uncloaked";
     cout << endl;
-    vessel::print();
-    destroyer::print();
-    battleship::print();
-    submarine::print();
-    carrier::print();
-    cout << "Laser: " << get_laser();
-    cout << "Plasma Cluster Nuke: " << get_plasma_cluster_nuke() << endl;
-        
-}  
-
-void super_ship::display() const
-{
-    vessel::display();
-    
-    cout << right << setw(5) << destroyer::get_battery_gun()+battleship::get_battery_gun()
-         << right << setw(5) << get_main_gun()
-         << right << setw(4) << battleship::get_cruise_missile()+carrier::get_cruise_missile()
-         << right << setw(4) << get_fighter_plane()
-         << right << setw(4) << get_torpedo()
-         << right << setw(4) << get_nuclear_missile()
-         << right << setw(4) << get_laser()
-         << right << setw(4) << get_plasma_cluster_nuke()
-         << endl;
+	cout << "Unit flamethrower: " <<  this->getFlamethrower() << endl;
+	cout << "Unit Stickies:     " <<  this->getStickyGrenade() << endl;
+	cout << "Unit Rockets:      " <<  this->getRocketLauncher() << endl << endl;
      
 } 
