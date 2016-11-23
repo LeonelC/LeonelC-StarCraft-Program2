@@ -1,14 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////
-//
-//   Driver Code
-//
-//   This file contains the main client code that drives the game processes.
-//       
-//   Created by Will McWhorter, Ph.D.
-//
-//////////////////////////////////////////////////////////////////////////////
-
-
 #include <iostream>
 #include <vector>
 using std::vector;
@@ -189,7 +178,7 @@ int main()
 								
 									tempghost = dynamic_cast<ghost*>(chosen_infantry); // This will return nullptr if x does not point
                              									                   	   // to an object of type B
-									if (not tempghost)
+									if (tempghost)
 										tempghost->setCloak(true);
 								}
 								else{
@@ -316,7 +305,7 @@ int main()
 							
 								tempghost = dynamic_cast<ghost*>(chosen_infantry); // This will return nullptr if x does not point
                          									                   	   // to an object of type B
-								if (not tempghost)
+								if (tempghost)
 									tempghost->setCloak(true);
 							}
 							else{
@@ -379,23 +368,7 @@ void display_infantrys(infantry* my_Ghost, infantry* my_Firebat,
                      infantry* my_Marine, infantry* my_Medic,
                      infantry* my_Super)
 {
-    /*
-    cout << edl;
-    cout << left
-         << setw(17) << "infantry Name"
-         << setw(18) << "infantry Type"
-         << right
-         << setw(7) << "Health"
-         << setw(5) << "BGun"
-         << setw(5) << "MGun"
-         << setw(4) << "CM"
-         << setw(4) << "FP"
-         << setw(4) << "TP"
-         << setw(4) << "NM"
-         << setw(4) << "LZ"
-         << setw(4) << "PCN"
-         << endl;
-         */
+
     cout << "------------------------------------------------------------------------------" << endl;
     
     my_Ghost -> display();
@@ -405,12 +378,7 @@ void display_infantrys(infantry* my_Ghost, infantry* my_Firebat,
     my_Super -> display();
      
     cout << endl;
-   /* 
-    if(my_Ghost -> get_team() == "Blue")
-        cout << "Total Blue Ships Remaining: " << infantry::get_total_blue_ships() << endl << endl;
-    else if(my_Ghost -> get_team() == "Red")
-        cout << "Total Red Ships Remaining: " << infantry::get_total_red_ships() << endl << endl;
-    */    
+ 
 }    
 
 
@@ -460,12 +428,7 @@ infantry* chooseBlueUnit(infantry* my_Ghost, infantry* my_Firebat,
          invalid=true;
          cout << "Invalid infantry: Please try again." << endl;
          system("pause");
-                      
-         //system("cls");
-     
-//					                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
-//					                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
-                            
+
      }  // end if
               
     } // end while
@@ -517,11 +480,7 @@ infantry* chooseRedUnit(infantry* my_Ghost, infantry* my_Firebat,
          invalid=true;
          cout << "Invalid infantry: Please try again." << endl;
          system("pause");
-                      
-         //system("cls");
-     
-//					                 display_infantrys(blue_Ghost, blue_Firebat, blue_Marine, blue_Medic, blue_Super);  
-//					                 display_infantrys(red_Ghost, red_Firebat, red_Marine, red_Medic, red_Super);  
+
                             
      }  // end if
               
