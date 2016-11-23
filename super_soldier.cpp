@@ -1,15 +1,3 @@
-//////////////////////////////////////////////////////////////////////////////////////
-//
-//    super_ship.cpp (Derived Class - Multiple Inheritance)
-//                                                                                   
-//    NOTE: This class is derived from multiple base classes which are derived 
-//          from the same base class (diamond inheritance)
-//
-//    Created by Will McWhorter, Ph.D.
-//
-//////////////////////////////////////////////////////////////////////////////////////
-
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -70,8 +58,7 @@ void superSoldier::die()
 
 void superSoldier::getAttacked(int damage) 
 {
-	if ( !getCloak() )
-    	this->setHealth(this->getHealth() - damage);
+	ghost::getAttacked(damage);
 }
 
 void superSoldier::attack(infantry* beingAttacked)
@@ -84,29 +71,21 @@ void superSoldier::attack(infantry* beingAttacked)
 	
 	this->setCloak(false);
 	switch(luck) {                                            //supersoldier is pretty particular about weapons used for a situation
-	case 1: if (this->getPistol() > 0){                       //critical miss
-			this->setPistol(getPistol() - 1);
-			damage = 5;
-			} break;
+	case 1: medic::attack(beingAttacked);
+			 break;
 			
 	case 2:
 	case 3:
-	case 4: if (this->getAssaultRifle() > 0){
-			this->setAssaultRifle(getAssaultRifle() - 2);
-			damage = 10;
-			} break;
+	case 4: marine::attack(beingAttacked);
+			 break;
 			
 	case 5: 
-	case 6: if (this->getFlamethrower() > 0){
-			this->setFlamethrower(getFlamethrower() - 10);
-			damage = 20;
-			} break;
+	case 6: firebat::attack(beingAttacked);
+			 break;
 	
 	case 7: 
-	case 8: if (this->getSniperRifle() > 0){
-			this->setSniperRifle(getSniperRifle() - 1);
-			damage = 20;
-			} break;
+	case 8: ghost::attack(beingAttacked);
+			 break;
 		
 	case 9: if (this->getStickyGrenade() > 0){
 			this->setStickyGrenade(getStickyGrenade() - 1);
@@ -117,28 +96,22 @@ void superSoldier::attack(infantry* beingAttacked)
 			damage = 40;
 			} break;
 	}  // end switch
-	
-	if (damage == 0 and this->getPistol() > 0) {             //in case he didn't have ammo pulls out pistol
-			this->setPistol(getPistol() - 1);
-			damage = 5;
-	}
-	beingAttacked->getAttacked(damage);                      //attacking an infantry unit for random damage
-
+	if (luck >= 9)
+	{
+		beingAttacked->getAttacked(damage);                      //attacking an infantry unit for random damage
 	
 	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
 		beingAttacked->die();
-	
+	}
 }
 void superSoldier::receiveAid(int healthBoost)
 {
-    this->setHealth(this->getHealth() + healthBoost);
+    ghost::receiveAid(healthBoost);
 }
 
 void superSoldier::renderAid(infantry* beingHelped)
 {
-   	int friendlyHP = beingHelped->getHealth();
-	beingHelped->receiveAid(30);
-	this->setBoosterShot(this->getBoosterShot() - 1); //reduce ammo by 1
+   	medic::renderAid(beingHelped);
 }
 
 
