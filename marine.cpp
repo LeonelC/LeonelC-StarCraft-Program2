@@ -1,12 +1,3 @@
-///////////////////////////////////////////////////////////////////////////////
-//
-//    battleship.cpp  Class Functions for the battleship Class (derived Class)
-//
-//    Created by Will McWhorter, Ph.D.
-//
-///////////////////////////////////////////////////////////////////////////////
-
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -57,7 +48,7 @@ void marine::attack(infantry* beingAttacked)
 {
 	if (this->assaultRifle > 0){
 		beingAttacked->getAttacked(10);                      //attacking an infantry unit for 10 damage
-		this->setAssaultRifle(this->getAssaultRifle() - 10); //reduce ammo by 10
+		this->setAssaultRifle(this->getAssaultRifle() - 2); //reduce ammo by 4
 	}
 	
 	if (beingAttacked->getHealth() <= 0)                      //kill the unit if their hp is < 0
@@ -101,6 +92,6 @@ void marine::speak() const
 void marine::display() const
 {
     infantry::display();
-	cout << "Unit Rifle:        " <<  this->assaultRifle << endl << endl;;
+    cout << setw(8) << this->assaultRifle << endl;
      
 } 

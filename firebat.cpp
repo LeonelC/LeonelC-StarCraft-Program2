@@ -1,11 +1,3 @@
-//////////////////////////////////////////////////////////////////////////
-//
-//    carrier.cpp  Class Functions for the carrier Class (derived Class)
-//
-//    Created by Will McWhorter, Ph.D.
-//
-//////////////////////////////////////////////////////////////////////////
-
 #include <iostream>
 #include <cstdlib>
 #include <ctime>
@@ -83,6 +75,6 @@ void firebat::speak() const
 void firebat::display() const
 {
     infantry::display();
-	cout << "Unit flamethrower: " <<  this->flamethrower << endl << endl;
+    cout << setw(8) << " " << setw(8) << this->flamethrower << setw(8) << " " << setw(7) << " " << setw(7) << " " << endl;
      
 } 
