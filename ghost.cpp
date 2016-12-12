@@ -1,3 +1,11 @@
+/////////////////////////////////////////////////////////////////////////////
+//
+//    ghost.cpp  Class Functions for the ghost Class (derived Class)
+//
+//    Created by Will McWhorter, Ph.D.
+//
+/////////////////////////////////////////////////////////////////////////////
+
 #include <iostream>
 #include <time.h>
 #include <stdlib.h>
@@ -57,7 +65,7 @@ void ghost::display() const
 
     infantry::display();
     cout << "Unit Sniper:       " <<  this->sniperRifle << endl;
-    cout << "Invisible:         " <<  ((this->getCloak() )? "cloaked" : "uncloaked");
+    cout << "Invisible:         " <<  this->cloak ? "cloaked" : "uncloaked";
 	cout << endl << endl;
      
 } 

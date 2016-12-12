@@ -1,3 +1,14 @@
+//////////////////////////////////////////////////////////////////////////////////////
+//
+//    super_ship.h (Derived Class - Multiple Inheritance)
+//                                                                                   
+//    NOTE: This class is derived from multiple base classes which are derived 
+//          from the same base class (diamond inheritance)
+//
+//    Created by Will McWhorter, Ph.D.
+//
+//////////////////////////////////////////////////////////////////////////////////////
+
 #ifndef SUPER_SOLDIER_H
 #define SUPER_SOLDIER_H
 
